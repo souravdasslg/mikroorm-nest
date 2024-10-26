@@ -12,7 +12,7 @@ export class AppController {
   }
 
   @Get('/get-mandate/:id')
-  getMandateWithTxn(@Param('id') id: string): Promise<MandateV2 | null> {
+  getMandate(@Param('id') id: string): Promise<Partial<MandateV2> | null> {
     return this.appService.getMandateWithTxn(id);
   }
 }

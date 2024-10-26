@@ -4,6 +4,7 @@ import {
   OneToOne,
   PrimaryKey,
   Property,
+  RequiredEntityData,
   SerializedPrimaryKey,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
@@ -68,4 +69,9 @@ export class MandateV2 extends BaseEntity {
 
   @Property()
   user!: ObjectId;
+
+  constructor(params: RequiredEntityData<MandateV2>) {
+    super();
+    Object.assign(this, params);
+  }
 }

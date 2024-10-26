@@ -1,7 +1,8 @@
-import { Property } from '@mikro-orm/core';
+import { OptionalProps, Property } from '@mikro-orm/core';
 
 export class BaseEntity {
-  @Property({ version: true })
+  [OptionalProps]?: '__v' | 'createdAt' | 'updatedAt';
+  @Property({ default: 0 })
   __v!: number;
 
   @Property({ onCreate: () => new Date() })
