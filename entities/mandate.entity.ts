@@ -1,6 +1,9 @@
 import {
+  Collection,
   Entity,
   Enum,
+  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryKey,
   Property,
@@ -8,7 +11,7 @@ import {
   SerializedPrimaryKey,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
-import { MandateTransactions } from './mandateTxns.entity';
+import { MandateTransactionsEntity } from './mandateTxns.entity';
 import { BaseEntity } from 'common/base.enitity';
 import { MandateV2Repository } from 'repositories/mandate.repository';
 
@@ -32,6 +35,14 @@ export class MandateStatusHistory {
   timestamp!: Date;
 }
 
+export class ExecutionDetails {
+  @Property()
+  executionDate!: Date;
+
+  @Property()
+  executionAmount!: number;
+}
+
 @Entity({ repository: () => MandateV2Repository })
 export class MandateV2 extends BaseEntity {
   @PrimaryKey()
@@ -46,8 +57,8 @@ export class MandateV2 extends BaseEntity {
   @Property()
   expiresAt!: Date;
 
-  @OneToOne(() => MandateTransactions, { nullable: true })
-  latestTxn!: MandateTransactions | null;
+  @OneToOne(() => MandateTransactionsEntity, { nullable: true })
+  transaction!: MandateTransactionsEntity | null;
 
   @Property()
   maxAmount!: number;

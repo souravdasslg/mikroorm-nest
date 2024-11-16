@@ -1,9 +1,19 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "defaultLibraryPrefix/orm-cache/(.*)": "<rootDir>/../libs/orm-cache/src/$1",
+    "defaultLibraryPrefix/orm-cache": "<rootDir>/../libs/orm-cache/src",
+    "@app/cache-manager/(.*)": "<rootDir>/../libs/cache-manager/src/$1",
+    "@app/cache-manager": "<rootDir>/../libs/cache-manager/src"
   }
 }

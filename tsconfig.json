@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-   "strict": true,
+    "strict": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "declaration": true,
@@ -22,9 +22,27 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "paths": {
-      "@app/repository-cache": ["libs/repository-cache/src"],
-      "@app/repository-cache/*": ["libs/repository-cache/src/*"],
-      "@app/common": ["common"]
+      "@app/repository-cache": [
+        "libs/repository-cache/src"
+      ],
+      "@app/repository-cache/*": [
+        "libs/repository-cache/src/*"
+      ],
+      "@app/common": [
+        "common"
+      ],
+      "defaultLibraryPrefix/orm-cache": [
+        "libs/orm-cache/src"
+      ],
+      "defaultLibraryPrefix/orm-cache/*": [
+        "libs/orm-cache/src/*"
+      ],
+      "@app/cache-manager": [
+        "libs/cache-manager/src"
+      ],
+      "@app/cache-manager/*": [
+        "libs/cache-manager/src/*"
+      ]
     }
   }
 }

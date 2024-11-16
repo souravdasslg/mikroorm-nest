@@ -1,13 +1,12 @@
 import { CacheAdapter } from '@mikro-orm/core';
-import { Injectable, Inject } from '@nestjs/common';
-import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
-
+import { Injectable } from '@nestjs/common';
+import { CacheManagerService } from '@app/cache-manager';
 @Injectable()
 export class OrmCache implements CacheAdapter {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(private cacheManager: CacheManagerService) {}
 
   async get<T>(name: string): Promise<T | undefined> {
-    return this.cacheManager.get<T>(name);
+    return this.cacheManager.get<T>(name) as T | undefined;
   }
 
   async set(
@@ -24,6 +23,6 @@ export class OrmCache implements CacheAdapter {
   }
 
   async clear(): Promise<void> {
-    await this.cacheManager.reset();
+    await this.cacheManager.clear();
   }
 }

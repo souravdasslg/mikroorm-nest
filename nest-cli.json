@@ -14,6 +14,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/repository-cache/tsconfig.lib.json"
       }
+    },
+    "orm-cache": {
+      "type": "library",
+      "root": "libs/orm-cache",
+      "entryFile": "index",
+      "sourceRoot": "libs/orm-cache/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/orm-cache/tsconfig.lib.json"
+      }
+    },
+    "cache-manager": {
+      "type": "library",
+      "root": "libs/cache-manager",
+      "entryFile": "index",
+      "sourceRoot": "libs/cache-manager/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cache-manager/tsconfig.lib.json"
+      }
     }
   }
 }
