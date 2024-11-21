@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { OrmCache } from './orm-cache.service';
-import { CacheManagerModule, CacheManagerService } from '@app/cache-manager';
+import { CacheManagerModule } from '@app/cache-manager';
 
 @Module({
-  providers: [OrmCache, CacheManagerService],
+  providers: [OrmCache],
   exports: [OrmCache],
   imports: [CacheManagerModule],
 })

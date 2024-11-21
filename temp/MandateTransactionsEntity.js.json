@@ -1,1 +1,60 @@
-{"data":{"_id":1000,"properties":{"_id":{"name":"_id","kind":"scalar","primary":true,"type":"ObjectId","array":false,"runtimeType":"ObjectId"},"id":{"name":"id","kind":"scalar","serializedPrimaryKey":true,"type":"string","array":false,"runtimeType":"string"},"amount":{"name":"amount","kind":"scalar","getter":false,"setter":false,"type":"number","array":false,"runtimeType":"number"},"status":{"name":"status","kind":"scalar","getter":false,"setter":false,"type":"string","array":false,"runtimeType":"string"}},"primaryKeys":["_id"],"filters":{},"hooks":{},"indexes":[],"uniques":[],"className":"MandateTransactionsEntity","path":"./dist/entities/mandateTxns.entity.js","collection":"mandate_transactions","name":"MandateTransactionsEntity","abstract":false,"internal":true,"constructorParams":[],"toJsonParams":[],"extends":"BaseEntity","useCache":true,"serializedPrimaryKey":"id","compositePK":false,"simplePK":true},"origin":"./dist/entities/mandateTxns.entity.js","hash":"fe9dd18e3184a2915373029c4a059546","version":"6.3.13"}
+{
+  "data": {
+    "_id": 1000,
+    "properties": {
+      "_id": {
+        "name": "_id",
+        "kind": "scalar",
+        "primary": true,
+        "type": "ObjectId",
+        "runtimeType": "ObjectId"
+      },
+      "id": {
+        "name": "id",
+        "kind": "scalar",
+        "serializedPrimaryKey": true,
+        "type": "string",
+        "runtimeType": "string"
+      },
+      "amount": {
+        "name": "amount",
+        "kind": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number",
+        "runtimeType": "number"
+      },
+      "status": {
+        "name": "status",
+        "kind": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "runtimeType": "string"
+      }
+    },
+    "primaryKeys": [
+      "_id"
+    ],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "className": "MandateTransactionsEntity",
+    "path": "./dist/entities/mandateTxns.entity.js",
+    "collection": "mandate_transactions",
+    "name": "MandateTransactionsEntity",
+    "abstract": false,
+    "internal": true,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "serializedPrimaryKey": "id",
+    "compositePK": false,
+    "simplePK": true
+  },
+  "origin": "./dist/entities/mandateTxns.entity.js",
+  "hash": "fe9dd18e3184a2915373029c4a059546",
+  "version": "6.3.13"
+}

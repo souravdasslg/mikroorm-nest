@@ -3,10 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { CacheManagerService } from '@app/cache-manager';
 @Injectable()
 export class OrmCache implements CacheAdapter {
-  constructor(private cacheManager: CacheManagerService) {}
+  constructor(private readonly cacheManager: CacheManagerService) {}
 
-  async get<T>(name: string): Promise<T | undefined> {
-    return this.cacheManager.get<T>(name) as T | undefined;
+  async get(name: string): Promise<any> {
+    return await this.cacheManager.get(name);
   }
 
   async set(
@@ -15,14 +15,17 @@ export class OrmCache implements CacheAdapter {
     origin: string,
     expiration?: number,
   ): Promise<void> {
-    await this.cacheManager.set(name, data, expiration ?? 1000000);
+    await this.cacheManager.set(name, data, expiration);
   }
 
-  async remove(name: string): Promise<void> {
+  async delete(name: string): Promise<void> {
     await this.cacheManager.del(name);
   }
 
   async clear(): Promise<void> {
-    await this.cacheManager.clear();
+    await Promise.resolve();
+  }
+  async remove(name: string): Promise<void> {
+    await this.cacheManager.del(name);
   }
 }

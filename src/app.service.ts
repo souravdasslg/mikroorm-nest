@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import {
   EMasterMandateStatusEnum,
   EPaymentGatewayEnum,
+  ExecutionDetails,
   MandateV2,
 } from 'entities/mandate.entity';
 import { MandateV2Repository } from 'repositories/mandate.repository';
@@ -25,39 +26,42 @@ export class AppService {
     private readonly queueService: QueueService,
   ) {}
 
-  async getMandate(id: string): Promise<MandateV2 | null> {
-    return this.mandateRepository.findOne({ id });
+  async getMandate(id: string): Promise<MandateV2> {
+    const res = await this.mandateRepository.findOneOrFail(
+      { id },
+      { failHandler: () => new Error('Mandate not found') },
+    );
+    return res;
   }
   async createMandate(): Promise<string> {
-    const mandate = new MandateV2({
-      id: new ObjectId().toString(),
-      status: EMasterMandateStatusEnum.PENDING,
-      creationAmount: 100,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      maxAmount: 1000,
-      pg: EPaymentGatewayEnum.STRIPE,
-      pgMandateId: '1234567890',
-      planId: '1234567890',
-      statusHistory: [],
-      user: new ObjectId(),
-      transaction: null,
-    });
-    await this.mandateRepository.save(mandate);
-    await this.queueService.addToQueue(mandate);
+    const mandate = this.mandateRepository.create(
+      {
+        id: new ObjectId().toString(),
+        status: EMasterMandateStatusEnum.PENDING,
+        creationAmount: 100,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        maxAmount: 1000,
+        pg: EPaymentGatewayEnum.STRIPE,
+        pgMandateId: '1234567890',
+        planId: '1234567890',
+        statusHistory: [],
+        user: new ObjectId(),
+      },
+      { persist: true },
+    )
+    await this.em.flush();
+    // await this.mandateRepository.save(mandate);
+    // await this.queueService.addToQueue(mandate);
     return mandate.id;
   }
   async getMandateWithTxn(id: string): Promise<Partial<MandateV2> | null> {
-    const cachedMandate = await this.cacheManager.get<Partial<MandateV2>>(
-      `mandate-${id}`,
-    );
-    if (cachedMandate) {
-      return cachedMandate;
-    }
     const mandate = await this.mandateRepository.findOne(
       { id },
       {
         fields: ['statusHistory', 'user', 'transaction'],
         populate: ['transaction.status'],
+        cache: true,
+        orderBy: { createdAt: 'desc' },
       },
     );
     console.log(mandate);
@@ -68,10 +72,9 @@ export class AppService {
 
   async findMandateByEitherStatus() {
     this.mandateRepository.find({
-      $or: [
+      $and: [
         {
-          maxAmount: 1,
-          pgMandateId: '2',
+          executionDetails: { $exists: true },
         },
       ],
     });
@@ -115,9 +118,11 @@ export class AppService {
     while (hasNext) {
       cursor = await this.mandateTxnRepository.findByCursor(
         {},
-        lastCursor
-          ? { after: lastCursor, first: 1, orderBy: { createdAt: 'desc' } }
-          : { first: 1, orderBy: { createdAt: 'desc' } },
+        {
+          ...(lastCursor ? { after: lastCursor } : {}),
+          first: 1,
+          orderBy: { createdAt: 'desc' },
+        },
       );
       hasNext = cursor.hasNextPage;
       lastCursor = cursor.endCursor;
@@ -128,5 +133,30 @@ export class AppService {
         console.log(item.id);
       });
     }
+  }
+
+  async updateExecutionDetails(mandateId: string, status: string) {
+    await this.mandateRepository.updateOne(
+      { id: mandateId },
+      {
+        executionDetails: {
+          notificationStatus: status,
+          executionDate: new Date(),
+          executionAmount: 3,
+        },
+      },
+    );
+  }
+
+  async aggregateExecutionDetails(mandateId: string) {
+    const mandate = await this.mandateRepository.aggregate([
+      {
+        $match: { $id: mandateId },
+        $project: {
+          executionDetails: 1,
+        },
+      },
+    ]);
+    console.log(mandate);
   }
 }

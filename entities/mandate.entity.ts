@@ -1,9 +1,9 @@
 import {
-  Collection,
+  Embeddable,
+  Embedded,
   Entity,
   Enum,
-  ManyToOne,
-  OneToMany,
+  Index,
   OneToOne,
   PrimaryKey,
   Property,
@@ -26,7 +26,7 @@ export enum EPaymentGatewayEnum {
   STRIPE = 'STRIPE',
 }
 
-@Entity()
+@Embeddable()
 export class MandateStatusHistory {
   @Property({ type: String })
   status!: EMasterMandateStatusEnum;
@@ -34,15 +34,22 @@ export class MandateStatusHistory {
   @Property({ type: Date })
   timestamp!: Date;
 }
-
+@Embeddable()
 export class ExecutionDetails {
-  @Property()
+  @Property({ nullable: true })
   executionDate!: Date;
 
-  @Property()
+  @Property({ nullable: true })
   executionAmount!: number;
+
+  @Property({ nullable: true })
+  notificationStatus!: string;
 }
 
+@Index({
+  properties: ['creationAmount', 'expiresAt'],
+  options: { order: { creationAmount: 'asc', expiresAt: 'desc' } },
+})
 @Entity({ repository: () => MandateV2Repository })
 export class MandateV2 extends BaseEntity {
   @PrimaryKey()
@@ -75,8 +82,11 @@ export class MandateV2 extends BaseEntity {
   @Enum(() => EMasterMandateStatusEnum)
   status!: EMasterMandateStatusEnum;
 
-  @Property()
+  @Embedded(() => MandateStatusHistory)
   statusHistory!: MandateStatusHistory[];
+
+  @Embedded(() => ExecutionDetails, { nullable: true })
+  executionDetails!: ExecutionDetails | null;
 
   @Property()
   user!: ObjectId;

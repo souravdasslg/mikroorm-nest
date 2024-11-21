@@ -11,8 +11,8 @@ export class AppController {
   }
 
   @Get('/get-mandate/:id')
-  getMandate(@Param('id') id: string): Promise<Partial<unknown> | null> {
-    return this.appService.getMandateWithTxn(id);
+  getMandate(@Param('id') id: string): Promise<Partial<unknown>> {
+    return this.appService.getMandate(id);
   }
 
   @Post('/create-transaction/:mandateId')
@@ -26,5 +26,13 @@ export class AppController {
   @Get('/find-all-transactions')
   findAllTransactions(): Promise<void> {
     return this.appService.findAllTransactions();
+  }
+
+  @Post('/update-execution-details/:mandateId')
+  updateExecutionDetails(
+    @Param('mandateId') mandateId: string,
+    @Body() body: { status: string },
+  ): Promise<void> {
+    return this.appService.updateExecutionDetails(mandateId, body.status);
   }
 }
