@@ -1,12 +1,7 @@
-import {
-  Entity,
-  ManyToOne,
-  PrimaryKey,
-  Property,
-  SerializedPrimaryKey,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property, Ref } from '@mikro-orm/core';
 import { BaseEntity } from 'common/base.enitity';
 import { MandateTxnRepository } from 'repositories/mandateTxn.repository';
+import { MandateV2 } from './mandate.entity';
 
 @Entity({
   repository: () => MandateTxnRepository,
@@ -22,6 +17,6 @@ export class MandateTransactionsEntity extends BaseEntity {
   @Property()
   status!: string;
 
-  // @ManyToOne(() => MandateV2)
-  // mandate!: MandateV2; // Reference back to MandateV2
+  @ManyToOne(() => MandateV2)
+  mandate!: Ref<MandateV2>;
 }

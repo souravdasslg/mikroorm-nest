@@ -36,8 +36,98 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "amount": {
-          "name": "amount",
+        "country": {
+          "name": "country",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "currency": {
+          "name": "currency",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "derived_from": {
+          "name": "derived_from",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "eligibility_os": {
+          "name": "eligibility_os",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "android",
+            "iOS"
+          ],
+          "mappedType": "array"
+        },
+        "eligibility_platform": {
+          "name": "eligibility_platform",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "frequency": {
+          "name": "frequency",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "localized_display_config": {
+          "name": "localized_display_config",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "pricing_display": {
+          "name": "pricing_display",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "pricing_post_trial": {
+          "name": "pricing_post_trial",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "pricing_trial": {
+          "name": "pricing_trial",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -54,13 +144,22 @@
           "nullable": false,
           "length": 255,
           "mappedType": "string"
+        },
+        "validity_trial": {
+          "name": "validity_trial",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
         }
       },
-      "name": "mandate_transactions",
+      "name": "plan_v2",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "mandate_transactions_pkey",
+          "keyName": "plan_v2_pkey",
           "columnNames": [
             "id"
           ],
@@ -288,6 +387,18 @@
           "referencedTableName": "public.mandate_transactions",
           "deleteRule": "set null",
           "updateRule": "cascade"
+        },
+        "mandate_v2_plan_id_foreign": {
+          "constraintName": "mandate_v2_plan_id_foreign",
+          "columnNames": [
+            "plan_id"
+          ],
+          "localTableName": "public.mandate_v2",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.plan_v2",
+          "updateRule": "cascade"
         }
       },
       "nativeEnums": {}
@@ -324,98 +435,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "country": {
-          "name": "country",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "currency": {
-          "name": "currency",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "derived_from": {
-          "name": "derived_from",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "eligibility_os": {
-          "name": "eligibility_os",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "android",
-            "iOS"
-          ],
-          "mappedType": "array"
-        },
-        "eligibility_platform": {
-          "name": "eligibility_platform",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "frequency": {
-          "name": "frequency",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "localized_display_config": {
-          "name": "localized_display_config",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "pricing_display": {
-          "name": "pricing_display",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "pricing_post_trial": {
-          "name": "pricing_post_trial",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "pricing_trial": {
-          "name": "pricing_trial",
+        "amount": {
+          "name": "amount",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -433,21 +454,22 @@
           "length": 255,
           "mappedType": "string"
         },
-        "validity_trial": {
-          "name": "validity_trial",
-          "type": "int",
+        "mandate_id": {
+          "name": "mandate_id",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "length": 255,
+          "mappedType": "string"
         }
       },
-      "name": "plan_v2",
+      "name": "mandate_transactions",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "plan_v2_pkey",
+          "keyName": "mandate_transactions_pkey",
           "columnNames": [
             "id"
           ],
@@ -458,7 +480,20 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {},
+      "foreignKeys": {
+        "mandate_transactions_mandate_id_foreign": {
+          "constraintName": "mandate_transactions_mandate_id_foreign",
+          "columnNames": [
+            "mandate_id"
+          ],
+          "localTableName": "public.mandate_transactions",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.mandate_v2",
+          "updateRule": "cascade"
+        }
+      },
       "nativeEnums": {}
     }
   ],

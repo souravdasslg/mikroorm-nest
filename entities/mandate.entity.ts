@@ -4,14 +4,17 @@ import {
   Entity,
   Enum,
   Index,
+  ManyToOne,
   OneToOne,
   PrimaryKey,
   Property,
+  Ref,
   RequiredEntityData,
 } from '@mikro-orm/core';
 import { MandateTransactionsEntity } from './mandateTxns.entity';
 import { BaseEntity } from 'common/base.enitity';
 import { MandateV2Repository } from 'repositories/mandate.repository';
+import { PlanV2 } from './plan';
 
 export enum EMasterMandateStatusEnum {
   PENDING = 'PENDING',
@@ -71,8 +74,8 @@ export class MandateV2 extends BaseEntity {
   @Property()
   pgMandateId?: string;
 
-  @Property()
-  planId!: string;
+  @ManyToOne(() => PlanV2)
+  plan!: Ref<PlanV2>;
 
   @Property({ type: String })
   status!: EMasterMandateStatusEnum;
