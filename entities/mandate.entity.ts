@@ -8,9 +8,7 @@ import {
   PrimaryKey,
   Property,
   RequiredEntityData,
-  SerializedPrimaryKey,
 } from '@mikro-orm/core';
-import { ObjectId } from '@mikro-orm/mongodb';
 import { MandateTransactionsEntity } from './mandateTxns.entity';
 import { BaseEntity } from 'common/base.enitity';
 import { MandateV2Repository } from 'repositories/mandate.repository';
@@ -53,9 +51,6 @@ export class ExecutionDetails {
 @Entity({ repository: () => MandateV2Repository })
 export class MandateV2 extends BaseEntity {
   @PrimaryKey()
-  _id!: ObjectId;
-
-  @SerializedPrimaryKey()
   id!: string;
 
   @Property()
@@ -70,7 +65,7 @@ export class MandateV2 extends BaseEntity {
   @Property()
   maxAmount!: number;
 
-  @Enum(() => EPaymentGatewayEnum)
+  @Property({ type: String })
   pg!: EPaymentGatewayEnum;
 
   @Property()
@@ -79,7 +74,7 @@ export class MandateV2 extends BaseEntity {
   @Property()
   planId!: string;
 
-  @Enum(() => EMasterMandateStatusEnum)
+  @Property({ type: String })
   status!: EMasterMandateStatusEnum;
 
   @Embedded(() => MandateStatusHistory)
@@ -89,7 +84,7 @@ export class MandateV2 extends BaseEntity {
   executionDetails!: ExecutionDetails | null;
 
   @Property()
-  user!: ObjectId;
+  user!: string;
 
   constructor(params: RequiredEntityData<MandateV2>) {
     super();

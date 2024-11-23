@@ -5,7 +5,6 @@ import {
   Property,
   SerializedPrimaryKey,
 } from '@mikro-orm/core';
-import { ObjectId } from '@mikro-orm/mongodb';
 import { BaseEntity } from 'common/base.enitity';
 import { MandateTxnRepository } from 'repositories/mandateTxn.repository';
 
@@ -15,9 +14,6 @@ import { MandateTxnRepository } from 'repositories/mandateTxn.repository';
 })
 export class MandateTransactionsEntity extends BaseEntity {
   @PrimaryKey()
-  _id!: ObjectId;
-
-  @SerializedPrimaryKey()
   id!: string;
 
   @Property()

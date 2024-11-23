@@ -2,18 +2,12 @@
   "data": {
     "_id": 1000,
     "properties": {
-      "_id": {
-        "name": "_id",
-        "kind": "scalar",
-        "primary": true,
-        "type": "ObjectId",
-        "runtimeType": "ObjectId"
-      },
       "id": {
         "name": "id",
         "kind": "scalar",
-        "serializedPrimaryKey": true,
+        "primary": true,
         "type": "string",
+        "array": false,
         "runtimeType": "string"
       },
       "amount": {
@@ -22,6 +16,7 @@
         "getter": false,
         "setter": false,
         "type": "number",
+        "array": false,
         "runtimeType": "number"
       },
       "status": {
@@ -30,11 +25,12 @@
         "getter": false,
         "setter": false,
         "type": "string",
+        "array": false,
         "runtimeType": "string"
       }
     },
     "primaryKeys": [
-      "_id"
+      "id"
     ],
     "filters": {},
     "hooks": {},
@@ -50,11 +46,10 @@
     "toJsonParams": [],
     "extends": "BaseEntity",
     "useCache": true,
-    "serializedPrimaryKey": "id",
     "compositePK": false,
     "simplePK": true
   },
   "origin": "./dist/entities/mandateTxns.entity.js",
-  "hash": "fe9dd18e3184a2915373029c4a059546",
-  "version": "6.3.13"
+  "hash": "f9e2ef542d54aef7b8bc9450437605a9",
+  "version": "6.4.0"
 }

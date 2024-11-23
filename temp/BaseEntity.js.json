@@ -2,21 +2,13 @@
   "data": {
     "_id": 0,
     "properties": {
-      "__v": {
-        "name": "__v",
-        "kind": "scalar",
-        "default": 0,
-        "getter": false,
-        "setter": false,
-        "type": "number",
-        "runtimeType": "number"
-      },
       "createdAt": {
         "name": "createdAt",
         "kind": "scalar",
         "getter": false,
         "setter": false,
         "type": "Date",
+        "array": false,
         "runtimeType": "Date"
       },
       "updatedAt": {
@@ -25,6 +17,7 @@
         "getter": false,
         "setter": false,
         "type": "Date",
+        "array": false,
         "runtimeType": "Date"
       }
     },
@@ -42,6 +35,6 @@
     "useCache": true
   },
   "origin": "./dist/common/base.enitity.js",
-  "hash": "47ecf9872ea308c5d4f7cb164f41fbb2",
-  "version": "6.3.13"
+  "hash": "cc8c2f519a747e958764dd79ef65b7f2",
+  "version": "6.4.0"
 }

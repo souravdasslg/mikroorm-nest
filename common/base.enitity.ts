@@ -1,9 +1,7 @@
 import { OptionalProps, Property } from '@mikro-orm/core';
 
 export class BaseEntity {
-  [OptionalProps]?: '__v' | 'createdAt' | 'updatedAt';
-  @Property({ default: 0 })
-  __v!: number;
+  [OptionalProps]?: 'createdAt' | 'updatedAt';
 
   @Property({ onCreate: () => new Date() })
   createdAt!: Date;

@@ -1,5 +1,3 @@
-import { CacheManagerService } from '@app/cache-manager';
-import { ObjectId } from '@mikro-orm/mongodb';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import {
@@ -21,7 +19,6 @@ export class AppService {
     private readonly mandateRepository: MandateV2Repository,
     @InjectRepository(MandateTransactionsEntity)
     private readonly mandateTxnRepository: MandateTxnRepository,
-    private readonly cacheManager: CacheManagerService,
     private readonly em: EntityManager,
     private readonly queueService: QueueService,
   ) {}
@@ -36,7 +33,7 @@ export class AppService {
   async createMandate(): Promise<string> {
     const mandate = this.mandateRepository.create(
       {
-        id: new ObjectId().toString(),
+        id: crypto.randomUUID(),
         status: EMasterMandateStatusEnum.PENDING,
         creationAmount: 100,
         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
@@ -45,10 +42,10 @@ export class AppService {
         pgMandateId: '1234567890',
         planId: '1234567890',
         statusHistory: [],
-        user: new ObjectId(),
+        user: '1234567890',
       },
       { persist: true },
-    )
+    );
     await this.em.flush();
     // await this.mandateRepository.save(mandate);
     // await this.queueService.addToQueue(mandate);
@@ -66,7 +63,6 @@ export class AppService {
     );
     console.log(mandate);
     console.log(mandate?.transaction);
-    await this.cacheManager.set(`mandate-${id}`, mandate);
     return mandate;
   }
 
@@ -148,15 +144,15 @@ export class AppService {
     );
   }
 
-  async aggregateExecutionDetails(mandateId: string) {
-    const mandate = await this.mandateRepository.aggregate([
-      {
-        $match: { $id: mandateId },
-        $project: {
-          executionDetails: 1,
-        },
-      },
-    ]);
-    console.log(mandate);
-  }
+  // async aggregateExecutionDetails(mandateId: string) {
+  //   const mandate = await this.mandateRepository.aggregate([
+  //     {
+  //       $match: { $id: mandateId },
+  //       $project: {
+  //         executionDetails: 1,
+  //       },
+  //     },
+  //   ]);
+  //   console.log(mandate);
+  // }
 }

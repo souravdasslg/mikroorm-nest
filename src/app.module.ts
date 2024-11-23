@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { MandateV2 } from 'entities/mandate.entity';
-import { defineConfig, FlushMode, MongoDriver } from '@mikro-orm/mongodb';
 import { OrmCacheModule } from 'libs/orm-cache/src/orm-cache.module';
 import { OrmCache } from 'libs/orm-cache/src/orm-cache.service';
 import QueryString from 'qs';
@@ -38,46 +37,47 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
         },
       },
     }),
-    MikroOrmModule.forRootAsync({
-      useFactory: () => ({
-        debug: true,
-        ensureIndexes: true,
-        entities: ['dist/**/*.entity.js'],
-        entitiesTs: ['**/*.entity.ts'],
-        metadataProvider: TsMorphMetadataProvider,
-        dbName: 'mikro',
-        clientUrl: `mongodb://localhost:27017,localhost:27018,localhost:27019`,
-        driverOptions: {
-          replicaSet: 'rs',
-          maxPoolSize: 500,
-          // maxStalenessSeconds: 300,
-          minPoolSize: 300,
-          readPreference: 'primary',
-          retryWrites: true,
-          socketTimeoutMS: 5000,
-        },
+    MikroOrmModule.forRoot(),
+    // MikroOrmModule.forRootAsync({
+    //   useFactory: () => ({
+    //     debug: true,
+    //     ensureIndexes: true,
+    //     entities: ['dist/**/*.entity.js'],
+    //     entitiesTs: ['**/*.entity.ts'],
+    //     metadataProvider: TsMorphMetadataProvider,
+    //     dbName: 'mikro',
+    //     clientUrl: `mongodb://localhost:27017,localhost:27018,localhost:27019`,
+    //     driverOptions: {
+    //       replicaSet: 'rs',
+    //       maxPoolSize: 500,
+    //       // maxStalenessSeconds: 300,
+    //       minPoolSize: 300,
+    //       readPreference: 'primary',
+    //       retryWrites: true,
+    //       socketTimeoutMS: 5000,
+    //     },
 
-        persistOnCreate: true,
-        flushMode: FlushMode.ALWAYS,
-        registerRequestContext: true,
-        driver: MongoDriver,
-        metadataCache: {
-          enabled: true,
-          pretty: true,
-          combined: true,
-          file: 'metadata.cache.json',
-        },
-      }),
-      imports: [OrmCacheModule, CacheManagerModule],
-      providers: [OrmCache, CacheManagerService],
-    }),
+    //     persistOnCreate: true,
+    //     flushMode: FlushMode.ALWAYS,
+    //     registerRequestContext: true,
+    //     driver: MongoDriver,
+    //     metadataCache: {
+    //       enabled: true,
+    //       pretty: true,
+    //       combined: true,
+    //       file: 'metadata.cache.json',
+    //     },
+    //   }),
+    //   imports: [OrmCacheModule, CacheManagerModule],
+    //   providers: [OrmCache, CacheManagerService],
+    // }),
     MikroOrmModule.forFeature([MandateV2, MandateTransactionsEntity]),
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    OrmCache,
-    CacheManagerService,
+    // OrmCache,
+    // CacheManagerService,
     QueueConsumerService,
     QueueService,
     ScheduleJobService,

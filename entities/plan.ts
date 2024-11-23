@@ -2,11 +2,12 @@ import {
   Embeddable,
   Embedded,
   Entity,
+  JsonProperty,
+  JsonType,
   Platform,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { ObjectId } from '@mikro-orm/mongodb';
 import { BaseEntity } from 'common/base.enitity';
 import { CurrencyEnum, Lang, OS, PlanCountryEnum } from 'common/enums';
 
@@ -60,10 +61,10 @@ export class Pricing {
 
 @Embeddable()
 export class Eligibility {
-  @Property()
+  @Property({ type: String })
   os!: OS[];
 
-  @Property()
+  @Property({ type: String })
   platform!: Platform[];
 }
 
@@ -76,12 +77,12 @@ export class PlanValidity {
 @Entity()
 export class PlanV2 extends BaseEntity {
   @PrimaryKey()
-  _id!: ObjectId;
+  id!: string;
 
-  @Property()
+  @Property({ type: String })
   country!: PlanCountryEnum;
 
-  @Property()
+  @Property({ type: String })
   currency!: CurrencyEnum;
 
   @Property()
@@ -90,16 +91,16 @@ export class PlanV2 extends BaseEntity {
   @Embedded(() => Eligibility)
   eligibility!: Eligibility;
 
-  @Property()
+  @Property({ type: String })
   frequency!: PlanFrequencyEnum;
 
-  @Embedded(() => PlanLocalizedDisplayConfig)
+  @Property({ type: JsonType })
   localizedDisplayConfig!: PlanLocalizedDisplayConfig;
 
   @Embedded(() => Pricing)
   pricing!: Pricing;
 
-  @Property()
+  @Property({ type: String })
   status!: PlanStatusEnum;
 
   @Embedded(() => PlanValidity)

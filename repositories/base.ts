@@ -6,7 +6,7 @@ import {
   FromEntityType,
   Loaded,
   wrap,
-} from '@mikro-orm/mongodb';
+} from '@mikro-orm/postgresql';
 
 export abstract class BaseRepository<
   T extends { id: string },
