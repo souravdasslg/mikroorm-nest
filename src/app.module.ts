@@ -3,17 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { MandateV2 } from 'entities/mandate.entity';
-import { OrmCacheModule } from 'libs/orm-cache/src/orm-cache.module';
-import { OrmCache } from 'libs/orm-cache/src/orm-cache.service';
-import QueryString from 'qs';
-import { CacheManagerModule, CacheManagerService } from '@app/cache-manager';
 import { BullModule } from '@nestjs/bullmq';
 import { QueueConsumerService } from './queue-consumer.service';
 import { QueueService } from './queue.service';
 import { ScheduleJobService } from './scheduleJob.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MandateTransactionsEntity } from 'entities/mandateTxns.entity';
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
+import { PlanV2 } from 'entities/plan';
 
 @Module({
   imports: [
@@ -71,7 +67,7 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
     //   imports: [OrmCacheModule, CacheManagerModule],
     //   providers: [OrmCache, CacheManagerService],
     // }),
-    MikroOrmModule.forFeature([MandateV2, MandateTransactionsEntity]),
+    MikroOrmModule.forFeature([MandateV2, MandateTransactionsEntity, PlanV2]),
   ],
   controllers: [AppController],
   providers: [

@@ -8,13 +8,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(255)",
+          "type": "bigint",
           "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
+          "autoincrement": true,
+          "primary": true,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "bigint"
         },
         "created_at": {
           "name": "created_at",
@@ -38,23 +37,29 @@
         },
         "country": {
           "name": "country",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "enumItems": [
+            "GLOBAL",
+            "IN"
+          ],
+          "mappedType": "enum"
         },
         "currency": {
           "name": "currency",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "enumItems": [
+            "INR",
+            "USD"
+          ],
+          "mappedType": "enum"
         },
         "derived_from": {
           "name": "derived_from",
@@ -68,7 +73,7 @@
         },
         "eligibility_os": {
           "name": "eligibility_os",
-          "type": "text[]",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -77,27 +82,30 @@
             "android",
             "iOS"
           ],
-          "mappedType": "array"
+          "mappedType": "enum"
         },
         "eligibility_platform": {
           "name": "eligibility_platform",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "enumItems": [
+            "app",
+            "tv",
+            "web"
+          ],
+          "mappedType": "enum"
         },
         "frequency": {
           "name": "frequency",
-          "type": "varchar(255)",
+          "type": "smallint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "enum"
         },
         "localized_display_config": {
           "name": "localized_display_config",
@@ -137,13 +145,16 @@
         },
         "status": {
           "name": "status",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "enumItems": [
+            "active",
+            "inactive"
+          ],
+          "mappedType": "enum"
         },
         "validity_trial": {
           "name": "validity_trial",
@@ -177,13 +188,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(255)",
+          "type": "bigint",
           "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
+          "autoincrement": true,
+          "primary": true,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "bigint"
         },
         "created_at": {
           "name": "created_at",
@@ -226,13 +236,12 @@
         },
         "transaction_id": {
           "name": "transaction_id",
-          "type": "varchar(255)",
+          "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "bigint"
         },
         "max_amount": {
           "name": "max_amount",
@@ -265,13 +274,12 @@
         },
         "plan_id": {
           "name": "plan_id",
-          "type": "varchar(255)",
+          "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "bigint"
         },
         "status": {
           "name": "status",
@@ -407,13 +415,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(255)",
+          "type": "bigint",
           "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
+          "autoincrement": true,
+          "primary": true,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "bigint"
         },
         "created_at": {
           "name": "created_at",
@@ -456,13 +463,12 @@
         },
         "mandate_id": {
           "name": "mandate_id",
-          "type": "varchar(255)",
+          "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "bigint"
         }
       },
       "name": "mandate_transactions",

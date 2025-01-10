@@ -1,7 +1,9 @@
 import {
+  BigIntType,
   Embeddable,
   Embedded,
   Entity,
+  Enum,
   JsonProperty,
   JsonType,
   Platform,
@@ -9,7 +11,14 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from 'common/base.enitity';
-import { CurrencyEnum, Lang, OS, PlanCountryEnum } from 'common/enums';
+import {
+  CurrencyEnum,
+  Lang,
+  OS,
+  PlanCountryEnum,
+  PlatformEnum,
+} from 'common/enums';
+import { PlanV2Repository } from 'repositories/plan.repository';
 
 export enum PlanStatusEnum {
   ACTIVE = 'active',
@@ -17,13 +26,13 @@ export enum PlanStatusEnum {
 }
 
 export enum PlanFrequencyEnum {
-  ANNUAL = 'annual',
-  BIWEEKLY = 'biweekly',
-  HALF_YEARLY = 'half_yearly',
-  MONTHLY = 'monthly',
-  QUARTERLY = 'quarterly',
-  TRIAL = 'trial',
-  WEEKLY = 'weekly',
+  ANNUAL = 365,
+  BIWEEKLY = 14,
+  HALF_YEARLY = 182,
+  MONTHLY = 30,
+  QUARTERLY = 90,
+  TRIAL = 7,
+  WEEKLY = 7,
 }
 
 @Embeddable()
@@ -61,11 +70,11 @@ export class Pricing {
 
 @Embeddable()
 export class Eligibility {
-  @Property({ type: String })
-  os!: OS[];
+  @Enum(() => OS)
+  os!: OS;
 
-  @Property({ type: String })
-  platform!: Platform[];
+  @Enum(() => PlatformEnum)
+  platform!: PlatformEnum;
 }
 
 @Embeddable()
@@ -74,15 +83,15 @@ export class PlanValidity {
   trial!: number;
 }
 
-@Entity()
+@Entity({ repository: () => PlanV2Repository })
 export class PlanV2 extends BaseEntity {
-  @PrimaryKey()
-  id!: string;
+  @PrimaryKey({ type: new BigIntType('bigint') })
+  id!: bigint;
 
-  @Property({ type: String })
+  @Enum(() => PlanCountryEnum)
   country!: PlanCountryEnum;
 
-  @Property({ type: String })
+  @Enum(() => CurrencyEnum)
   currency!: CurrencyEnum;
 
   @Property()
@@ -91,7 +100,7 @@ export class PlanV2 extends BaseEntity {
   @Embedded(() => Eligibility)
   eligibility!: Eligibility;
 
-  @Property({ type: String })
+  @Enum(() => PlanFrequencyEnum)
   frequency!: PlanFrequencyEnum;
 
   @Property({ type: JsonType })
@@ -100,7 +109,7 @@ export class PlanV2 extends BaseEntity {
   @Embedded(() => Pricing)
   pricing!: Pricing;
 
-  @Property({ type: String })
+  @Enum(() => PlanStatusEnum)
   status!: PlanStatusEnum;
 
   @Embedded(() => PlanValidity)

@@ -5,9 +5,9 @@ import { MandateTransactionsEntity } from 'entities/mandateTxns.entity';
 import { PlanV2 } from 'entities/plan';
 import { EntityGenerator } from '@mikro-orm/entity-generator';
 import { Migrator } from '@mikro-orm/migrations';
-
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 const config: Options = {
-  dbName: 'postgres',
+  dbName: 'mikro',
   debug: true,
   driver: PostgreSqlDriver,
   extensions: [EntityGenerator, Migrator],
@@ -20,6 +20,7 @@ const config: Options = {
   user: 'postgres',
   persistOnCreate: true,
   flushMode: FlushMode.ALWAYS,
+  highlighter: new SqlHighlighter(),
   migrations: {
     path: 'dist/migrations',
     pathTs: 'migrations',
@@ -33,6 +34,13 @@ const config: Options = {
     bidirectionalRelations: true,
     customBaseEntityName: 'Base',
     useCoreBaseEntity: true,
+  },
+  seeder: {
+    path: './seeders',
+    defaultSeeder: 'DatabaseSeeder',
+    glob: '!(*.d).{js,ts}',
+    emit: 'ts',
+    fileName: (className: string) => className,
   },
 };
 

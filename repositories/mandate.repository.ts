@@ -1,4 +1,6 @@
 import { MandateV2 } from 'entities/mandate.entity';
-import { BaseRepository } from './base';
+import { Injectable } from '@nestjs/common';
+import { EntityRepository } from '@mikro-orm/postgresql';
 
-export class MandateV2Repository extends BaseRepository<MandateV2> {}
+@Injectable()
+export class MandateV2Repository extends EntityRepository<MandateV2> {}

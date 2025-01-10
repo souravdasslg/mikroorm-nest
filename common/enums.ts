@@ -8,7 +8,7 @@ export enum OS {
   IOS = 'iOS',
 }
 
-export enum Platform {
+export enum PlatformEnum {
   APP = 'app',
   TV = 'tv',
   WEB = 'web',

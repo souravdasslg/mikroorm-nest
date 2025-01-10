@@ -1,4 +1,5 @@
 import {
+  BigIntType,
   Embeddable,
   Embedded,
   Entity,
@@ -53,7 +54,7 @@ export class ExecutionDetails {
 })
 @Entity({ repository: () => MandateV2Repository })
 export class MandateV2 extends BaseEntity {
-  @PrimaryKey()
+  @PrimaryKey({ type: new BigIntType('string') })
   id!: string;
 
   @Property()
@@ -74,7 +75,7 @@ export class MandateV2 extends BaseEntity {
   @Property()
   pgMandateId?: string;
 
-  @ManyToOne(() => PlanV2)
+  @ManyToOne(() => PlanV2, { mapToPk: true })
   plan!: Ref<PlanV2>;
 
   @Property({ type: String })

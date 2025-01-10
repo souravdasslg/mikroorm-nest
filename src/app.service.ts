@@ -1,9 +1,7 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import {
   EMasterMandateStatusEnum,
   EPaymentGatewayEnum,
-  ExecutionDetails,
   MandateV2,
 } from 'entities/mandate.entity';
 import { MandateV2Repository } from 'repositories/mandate.repository';
@@ -11,16 +9,17 @@ import { Cursor, EntityManager } from '@mikro-orm/core';
 import { QueueService } from './queue.service';
 import { MandateTransactionsEntity } from 'entities/mandateTxns.entity';
 import { MandateTxnRepository } from 'repositories/mandateTxn.repository';
+import { getTsid } from 'tsid-ts';
+import { PlanV2Repository } from 'repositories/plan.repository';
 
 @Injectable()
 export class AppService {
   constructor(
-    @InjectRepository(MandateV2)
     private readonly mandateRepository: MandateV2Repository,
-    @InjectRepository(MandateTransactionsEntity)
     private readonly mandateTxnRepository: MandateTxnRepository,
     private readonly em: EntityManager,
     private readonly queueService: QueueService,
+    private readonly planRepository: PlanV2Repository,
   ) {}
 
   async getMandate(id: string): Promise<MandateV2> {
@@ -31,25 +30,28 @@ export class AppService {
     return res;
   }
   async createMandate(): Promise<string> {
-    const mandate = this.mandateRepository.create(
-      {
-        id: crypto.randomUUID(),
-        status: EMasterMandateStatusEnum.PENDING,
-        creationAmount: 100,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
-        maxAmount: 1000,
-        pg: EPaymentGatewayEnum.STRIPE,
-        pgMandateId: '1234567890',
-        planId: '1234567890',
-        statusHistory: [],
-        user: '1234567890',
-      },
-      { persist: true },
+    const fetchedPlan = await this.planRepository.findOneOrFail(
+      { id: '1234567890' },
+      { failHandler: () => new Error('Plan not found') },
     );
-    await this.em.flush();
-    // await this.mandateRepository.save(mandate);
+    console.log(fetchedPlan);
+    const mandate = this.mandateRepository.create({
+      id: getTsid().toBigInt().toString(),
+      status: EMasterMandateStatusEnum.PENDING,
+      creationAmount: 100,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      maxAmount: 1000,
+      pg: EPaymentGatewayEnum.STRIPE,
+      pgMandateId: '1234567890',
+      plan: fetchedPlan,
+      statusHistory: [
+        { status: EMasterMandateStatusEnum.PENDING, timestamp: new Date() },
+      ],
+      user: '1234567890',
+    });
+    await this.mandateRepository.upsert(mandate);
     // await this.queueService.addToQueue(mandate);
-    return mandate.id;
+    return mandate.id.toString();
   }
   async getMandateWithTxn(id: string): Promise<Partial<MandateV2> | null> {
     const mandate = await this.mandateRepository.findOne(
@@ -132,16 +134,16 @@ export class AppService {
   }
 
   async updateExecutionDetails(mandateId: string, status: string) {
-    await this.mandateRepository.updateOne(
-      { id: mandateId },
-      {
-        executionDetails: {
-          notificationStatus: status,
-          executionDate: new Date(),
-          executionAmount: 3,
-        },
-      },
-    );
+    // await this.mandateRepository.upsert(
+    //   { id: mandateId },
+    //   {
+    //     executionDetails: {
+    //       notificationStatus: status,
+    //       executionDate: new Date(),
+    //       executionAmount: 3,
+    //     },
+    //   },
+    // );
   }
 
   // async aggregateExecutionDetails(mandateId: string) {

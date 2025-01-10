@@ -1,4 +1,11 @@
-import { Entity, ManyToOne, PrimaryKey, Property, Ref } from '@mikro-orm/core';
+import {
+  BigIntType,
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+  Ref,
+} from '@mikro-orm/core';
 import { BaseEntity } from 'common/base.enitity';
 import { MandateTxnRepository } from 'repositories/mandateTxn.repository';
 import { MandateV2 } from './mandate.entity';
@@ -8,7 +15,7 @@ import { MandateV2 } from './mandate.entity';
   tableName: 'mandate_transactions',
 })
 export class MandateTransactionsEntity extends BaseEntity {
-  @PrimaryKey()
+  @PrimaryKey({ type: new BigIntType('string') })
   id!: string;
 
   @Property()
