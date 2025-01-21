@@ -2,7 +2,13 @@ import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { CurrencyEnum, OS, PlatformEnum } from 'common/enums';
 import { PlanCountryEnum } from 'common/enums';
+import {
+  EMasterMandateStatusEnum,
+  EPaymentGatewayEnum,
+} from 'entities/mandate.entity';
+import { MandateV2 } from 'entities/mandate.entity';
 import { PlanFrequencyEnum, PlanStatusEnum, PlanV2 } from 'entities/plan';
+import { getTsid } from 'tsid-ts';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -38,5 +44,18 @@ export class DatabaseSeeder extends Seeder {
       },
     });
     await em.persist(plan);
+
+    const mandate = em.create(MandateV2, {
+      id: getTsid().toString(),
+      creationAmount: 100,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+      maxAmount: 100,
+      pg: EPaymentGatewayEnum.STRIPE,
+      plan: plan.id,
+      status: EMasterMandateStatusEnum.ACTIVE,
+      statusHistory: [],
+      user: 'test',
+    });
+    await em.persist(mandate);
   }
 }

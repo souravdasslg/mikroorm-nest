@@ -1,4 +1,4 @@
-import { CacheAdapter, Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { FlushMode } from '@mikro-orm/core';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
@@ -7,33 +7,7 @@ import { MandateTransactionsEntity } from 'entities/mandateTxns.entity';
 import { PlanV2 } from 'entities/plan';
 import { EntityGenerator } from '@mikro-orm/entity-generator';
 import { Migrator } from '@mikro-orm/migrations';
-import Redis from 'ioredis';
-
-class RedisCache implements CacheAdapter {
-  private client: Redis;
-
-  constructor() {
-    this.client = new Redis('redis://localhost:6379');
-  }
-
-  async get(key: string): Promise<any> {
-    const value = await this.client.get(key);
-    return value ? value : null;
-  }
-
-  async set(key: string, value: any): Promise<void> {
-    console.log('set', key, value);
-    await this.client.set(key, value);
-  }
-
-  async remove(key: string): Promise<void> {
-    await this.client.del(key);
-  }
-
-  async clear(): Promise<void> {
-    await this.client.flushall();
-  }
-}
+import { RedisCache } from './result-cache';
 
 const config: Options = {
   dbName: 'postgres',
@@ -67,7 +41,9 @@ const config: Options = {
   resultCache: {
     adapter: RedisCache,
     expiration: 60000, // 1 minute
-    global: false,
+    options: {
+      // Additional Redis options if needed
+    },
   },
   seeder: {
     path: './seeders',

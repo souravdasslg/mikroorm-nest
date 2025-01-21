@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { MandateV2 } from 'entities/mandate.entity';
+import { MandateChangeSubscriber, MandateV2 } from 'entities/mandate.entity';
 import { BullModule } from '@nestjs/bullmq';
 import { QueueConsumerService } from './queue-consumer.service';
 import { QueueService } from './queue.service';
@@ -42,14 +42,13 @@ import { MandateV2Repository } from 'repositories/mandate.repository';
   controllers: [AppController],
   providers: [
     AppService,
-    // OrmCache,
-    // CacheManagerService,
     QueueConsumerService,
     QueueService,
     ScheduleJobService,
     MandateV2Repository,
     MandateTxnRepository,
     PlanV2Repository,
+    MandateChangeSubscriber,
   ],
 })
 export class AppModule {}

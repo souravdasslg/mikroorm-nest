@@ -21,12 +21,26 @@ export class AppService {
     private readonly queueService: QueueService,
     private readonly planRepository: PlanV2Repository,
   ) {}
-
+  async updateMandate(
+    mandateId: string,
+    status: EMasterMandateStatusEnum,
+  ): Promise<Partial<unknown>> {
+    const mandate = await this.mandateRepository.findOneOrFail({
+      id: mandateId,
+    });
+    mandate.status = status;
+    await this.mandateRepository.save(mandate);
+    console.log('mandate updated');
+    return mandate;
+  }
   async getMandate(id: string): Promise<MandateV2> {
     const res = await this.mandateRepository.findOneOrFail(
       { id },
-      { failHandler: () => new Error('Mandate not found') },
-    )
+      {
+        failHandler: () => new Error('Mandate not found'),
+        cache: 60000, // 1 minute
+      },
+    );
     return res;
   }
   async createMandate(): Promise<string> {

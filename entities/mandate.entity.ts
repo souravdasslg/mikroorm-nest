@@ -10,13 +10,16 @@ import {
   OneToOne,
   PrimaryKey,
   Property,
-  Ref,
-  RequiredEntityData,
+  EventArgs,
+  EntityName,
+  EventSubscriber,
+  EntityManager,
 } from '@mikro-orm/core';
 import { MandateTransactionsEntity } from './mandateTxns.entity';
 import { BaseEntity } from 'common/base.enitity';
 import { MandateV2Repository } from 'repositories/mandate.repository';
 import { PlanV2 } from './plan';
+import { Injectable } from '@nestjs/common';
 
 export enum EMasterMandateStatusEnum {
   PENDING = 'PENDING',
@@ -53,12 +56,12 @@ export class ExecutionDetails {
   properties: ['creationAmount', 'expiresAt'],
   options: { order: { creationAmount: 'asc', expiresAt: 'desc' } },
 })
-@Entity({ repository: () => MandateV2Repository })
+@Entity({ repository: () => MandateV2Repository, })
 export class MandateV2 extends BaseEntity {
   [EntityRepositoryType]!: MandateV2Repository;
+
   @PrimaryKey({ type: new BigIntType('string') })
   id!: string;
-
   @Property()
   creationAmount!: number;
 
@@ -84,16 +87,44 @@ export class MandateV2 extends BaseEntity {
   status!: EMasterMandateStatusEnum;
 
   @Embedded(() => MandateStatusHistory)
-  statusHistory!: MandateStatusHistory[];
+  statusHistory: MandateStatusHistory[] = [];
 
   @Embedded(() => ExecutionDetails, { nullable: true })
   executionDetails!: ExecutionDetails | null;
 
   @Property()
   user!: string;
+}
 
-  constructor(params: RequiredEntityData<MandateV2>) {
-    super();
-    Object.assign(this, params);
+@Injectable()
+export class MandateChangeSubscriber implements EventSubscriber<MandateV2> {
+  constructor(em: EntityManager) {
+    em.getEventManager().registerSubscriber(this);
+  }
+  getSubscribedEntities(): EntityName<MandateV2>[] {
+    console.log('getSubscribedEntities');
+    return [MandateV2];
+  }
+
+  async afterCreate(args: EventArgs<MandateV2>): Promise<void> {
+    console.log('onBeforeCreate', args);
+  }
+  async afterDelete(args: EventArgs<MandateV2>): Promise<void> {
+    console.log('afterDelete', args);
+  }
+
+  async onBeforeUpdate(args: EventArgs<MandateV2>): Promise<void> {
+    console.log('onBeforeUpdate', args);
+  }
+
+  async beforeUpdate(args: EventArgs<MandateV2>): Promise<void> {
+    console.log('onBeforeUpdate', args);
+    const changeSets = args.changeSet;
+
+    console.log(changeSets);
+  }
+
+  async beforeUpsert(args: EventArgs<MandateV2>): Promise<void> {
+    console.log('beforeUpsert', args);
   }
 }

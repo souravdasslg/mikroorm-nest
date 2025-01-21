@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { EMasterMandateStatusEnum } from 'entities/mandate.entity';
 
 @Controller()
 export class AppController {
@@ -13,6 +14,13 @@ export class AppController {
   @Get('/get-mandate/:id')
   getMandate(@Param('id') id: string): Promise<Partial<unknown>> {
     return this.appService.getMandate(id);
+  }
+
+  @Post('/update-mandate')
+  updateMandate(
+    @Body() body: { mandateId: string; status: EMasterMandateStatusEnum },
+  ) {
+    return this.appService.updateMandate(body.mandateId, body.status);
   }
 
   @Post('/create-transaction/:mandateId')
