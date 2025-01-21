@@ -20,11 +20,6 @@ export class ScheduleJobService {
 
       {
         name: randomUUID(),
-        opts: {
-          deduplication: {
-            id: 'mandate',
-          },
-        },
       },
     );
   }

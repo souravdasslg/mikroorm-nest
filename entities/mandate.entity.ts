@@ -3,6 +3,7 @@ import {
   Embeddable,
   Embedded,
   Entity,
+  EntityRepositoryType,
   Enum,
   Index,
   ManyToOne,
@@ -54,6 +55,7 @@ export class ExecutionDetails {
 })
 @Entity({ repository: () => MandateV2Repository })
 export class MandateV2 extends BaseEntity {
+  [EntityRepositoryType]!: MandateV2Repository;
   @PrimaryKey({ type: new BigIntType('string') })
   id!: string;
 
@@ -75,8 +77,8 @@ export class MandateV2 extends BaseEntity {
   @Property()
   pgMandateId?: string;
 
-  @ManyToOne(() => PlanV2, { mapToPk: true })
-  plan!: Ref<PlanV2>;
+  @ManyToOne(() => PlanV2)
+  plan!: PlanV2;
 
   @Property({ type: String })
   status!: EMasterMandateStatusEnum;

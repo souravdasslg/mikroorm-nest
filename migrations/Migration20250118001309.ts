@@ -1,9 +1,9 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20241125153103 extends Migration {
+export class Migration20250118001309 extends Migration {
 
   override async up(): Promise<void> {
-    this.addSql(`create table "plan_v2" ("id" bigserial primary key, "created_at" timestamptz not null, "updated_at" timestamptz not null, "country" text check ("country" in ('GLOBAL', 'IN')) not null, "currency" text check ("currency" in ('INR', 'USD')) not null, "derived_from" varchar(255) null, "eligibility_os" text[] not null, "eligibility_platform" text[] not null, "frequency" smallint not null, "localized_display_config" jsonb not null, "pricing_display" int not null, "pricing_post_trial" int not null, "pricing_trial" int not null, "status" text check ("status" in ('active', 'inactive')) not null, "validity_trial" int not null);`);
+    this.addSql(`create table "plan_v2" ("id" bigserial primary key, "created_at" timestamptz not null, "updated_at" timestamptz not null, "country" text check ("country" in ('GLOBAL', 'IN')) not null, "currency" text check ("currency" in ('INR', 'USD')) not null, "derived_from" varchar(255) null, "eligibility_os" text check ("eligibility_os" in ('android', 'iOS')) not null, "eligibility_platform" text check ("eligibility_platform" in ('app', 'tv', 'web')) not null, "frequency" smallint not null, "localized_display_config" jsonb not null, "pricing_display" int not null, "pricing_post_trial" int not null, "pricing_trial" int not null, "status" text check ("status" in ('active', 'inactive')) not null, "validity_trial" int not null);`);
 
     this.addSql(`create table "mandate_v2" ("id" bigserial primary key, "created_at" timestamptz not null, "updated_at" timestamptz not null, "creation_amount" int not null, "expires_at" timestamptz not null, "transaction_id" bigint null, "max_amount" int not null, "pg" varchar(255) not null, "pg_mandate_id" varchar(255) null, "plan_id" bigint not null, "status" varchar(255) not null, "status_history" jsonb not null, "execution_details_execution_date" timestamptz null, "execution_details_execution_amount" int null, "execution_details_notification_status" varchar(255) null, "user" varchar(255) not null);`);
     this.addSql(`alter table "mandate_v2" add constraint "mandate_v2_transaction_id_unique" unique ("transaction_id");`);

@@ -3,12 +3,15 @@ import {
   Embeddable,
   Embedded,
   Entity,
+  EntityRepositoryType,
   Enum,
   JsonProperty,
   JsonType,
   Platform,
   PrimaryKey,
   Property,
+  Collection,
+  OneToMany,
 } from '@mikro-orm/core';
 import { BaseEntity } from 'common/base.enitity';
 import {
@@ -19,6 +22,7 @@ import {
   PlatformEnum,
 } from 'common/enums';
 import { PlanV2Repository } from 'repositories/plan.repository';
+import { MandateV2 } from './mandate.entity';
 
 export enum PlanStatusEnum {
   ACTIVE = 'active',
@@ -87,6 +91,8 @@ export class PlanValidity {
 export class PlanV2 extends BaseEntity {
   @PrimaryKey({ type: new BigIntType('bigint') })
   id!: bigint;
+
+  [EntityRepositoryType]!: PlanV2Repository;
 
   @Enum(() => PlanCountryEnum)
   country!: PlanCountryEnum;

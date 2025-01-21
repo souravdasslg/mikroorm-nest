@@ -1,6 +1,7 @@
 import {
   BigIntType,
   Entity,
+  EntityRepositoryType,
   ManyToOne,
   PrimaryKey,
   Property,
@@ -15,6 +16,7 @@ import { MandateV2 } from './mandate.entity';
   tableName: 'mandate_transactions',
 })
 export class MandateTransactionsEntity extends BaseEntity {
+  [EntityRepositoryType]!: MandateTxnRepository;
   @PrimaryKey({ type: new BigIntType('string') })
   id!: string;
 

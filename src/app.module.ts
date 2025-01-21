@@ -10,6 +10,9 @@ import { ScheduleJobService } from './scheduleJob.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MandateTransactionsEntity } from 'entities/mandateTxns.entity';
 import { PlanV2 } from 'entities/plan';
+import { MandateTxnRepository } from 'repositories/mandateTxn.repository';
+import { PlanV2Repository } from 'repositories/plan.repository';
+import { MandateV2Repository } from 'repositories/mandate.repository';
 
 @Module({
   imports: [
@@ -34,39 +37,6 @@ import { PlanV2 } from 'entities/plan';
       },
     }),
     MikroOrmModule.forRoot(),
-    // MikroOrmModule.forRootAsync({
-    //   useFactory: () => ({
-    //     debug: true,
-    //     ensureIndexes: true,
-    //     entities: ['dist/**/*.entity.js'],
-    //     entitiesTs: ['**/*.entity.ts'],
-    //     metadataProvider: TsMorphMetadataProvider,
-    //     dbName: 'mikro',
-    //     clientUrl: `mongodb://localhost:27017,localhost:27018,localhost:27019`,
-    //     driverOptions: {
-    //       replicaSet: 'rs',
-    //       maxPoolSize: 500,
-    //       // maxStalenessSeconds: 300,
-    //       minPoolSize: 300,
-    //       readPreference: 'primary',
-    //       retryWrites: true,
-    //       socketTimeoutMS: 5000,
-    //     },
-
-    //     persistOnCreate: true,
-    //     flushMode: FlushMode.ALWAYS,
-    //     registerRequestContext: true,
-    //     driver: MongoDriver,
-    //     metadataCache: {
-    //       enabled: true,
-    //       pretty: true,
-    //       combined: true,
-    //       file: 'metadata.cache.json',
-    //     },
-    //   }),
-    //   imports: [OrmCacheModule, CacheManagerModule],
-    //   providers: [OrmCache, CacheManagerService],
-    // }),
     MikroOrmModule.forFeature([MandateV2, MandateTransactionsEntity, PlanV2]),
   ],
   controllers: [AppController],
@@ -77,6 +47,9 @@ import { PlanV2 } from 'entities/plan';
     QueueConsumerService,
     QueueService,
     ScheduleJobService,
+    MandateV2Repository,
+    MandateTxnRepository,
+    PlanV2Repository,
   ],
 })
 export class AppModule {}

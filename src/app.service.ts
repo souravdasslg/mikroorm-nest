@@ -26,7 +26,7 @@ export class AppService {
     const res = await this.mandateRepository.findOneOrFail(
       { id },
       { failHandler: () => new Error('Mandate not found') },
-    );
+    )
     return res;
   }
   async createMandate(): Promise<string> {
@@ -35,7 +35,7 @@ export class AppService {
       { failHandler: () => new Error('Plan not found') },
     );
     console.log(fetchedPlan);
-    const mandate = this.mandateRepository.create({
+    const mandate = await this.mandateRepository.create({
       id: getTsid().toBigInt().toString(),
       status: EMasterMandateStatusEnum.PENDING,
       creationAmount: 100,
@@ -49,7 +49,7 @@ export class AppService {
       ],
       user: '1234567890',
     });
-    await this.mandateRepository.upsert(mandate);
+    await this.mandateRepository.save(mandate);
     // await this.queueService.addToQueue(mandate);
     return mandate.id.toString();
   }
