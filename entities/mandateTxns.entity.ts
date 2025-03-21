@@ -7,8 +7,8 @@ import {
   Property,
   Ref,
 } from '@mikro-orm/core';
-import { BaseEntity } from 'common/base.enitity';
-import { MandateTxnRepository } from 'repositories/mandateTxn.repository';
+import { BaseEntity } from '../common/base.enitity';
+import { MandateTxnRepository } from '../repositories/mandateTxn.repository';
 import { MandateV2 } from './mandate.entity';
 
 @Entity({
@@ -17,8 +17,6 @@ import { MandateV2 } from './mandate.entity';
 })
 export class MandateTransactionsEntity extends BaseEntity {
   [EntityRepositoryType]!: MandateTxnRepository;
-  @PrimaryKey({ type: new BigIntType('string') })
-  id!: string;
 
   @Property()
   amount!: number;

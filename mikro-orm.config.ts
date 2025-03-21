@@ -1,26 +1,25 @@
-import { Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { Options, MongoDriver } from '@mikro-orm/mongodb';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { FlushMode } from '@mikro-orm/core';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import { MandateV2 } from 'entities/mandate.entity';
-import { MandateTransactionsEntity } from 'entities/mandateTxns.entity';
-import { PlanV2 } from 'entities/plan';
+import { MandateV2 } from './entities/mandate.entity';
+import { MandateTransactionsEntity } from './entities/mandateTxns.entity';
+import { PlanV2 } from './entities/plan';
 import { EntityGenerator } from '@mikro-orm/entity-generator';
 import { Migrator } from '@mikro-orm/migrations';
 import { RedisCache } from './result-cache';
 
 const config: Options = {
-  dbName: 'postgres',
+ 
   debug: true,
-  driver: PostgreSqlDriver,
+  driver: MongoDriver,
   extensions: [EntityGenerator, Migrator],
   entities: [MandateV2, MandateTransactionsEntity, PlanV2],
   entitiesTs: [MandateV2, MandateTransactionsEntity, PlanV2],
-  host: 'localhost',
+
   metadataProvider: TsMorphMetadataProvider,
-  password: '12345678',
-  port: 5432,
-  user: 'postgres',
+  clientUrl: 'mongodb://localhost:27017/mikro',
+  user: 'mikro',
   persistOnCreate: true,
   flushMode: FlushMode.ALWAYS,
   highlighter: new SqlHighlighter(),

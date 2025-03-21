@@ -16,8 +16,8 @@ import {
   EntityManager,
 } from '@mikro-orm/core';
 import { MandateTransactionsEntity } from './mandateTxns.entity';
-import { BaseEntity } from 'common/base.enitity';
-import { MandateV2Repository } from 'repositories/mandate.repository';
+import { BaseEntity } from '../common/base.enitity';
+import { MandateV2Repository } from '../repositories/mandate.repository';
 import { PlanV2 } from './plan';
 import { Injectable } from '@nestjs/common';
 
@@ -60,8 +60,6 @@ export class ExecutionDetails {
 export class MandateV2 extends BaseEntity {
   [EntityRepositoryType]!: MandateV2Repository;
 
-  @PrimaryKey({ type: new BigIntType('string') })
-  id!: string;
   @Property()
   creationAmount!: number;
 

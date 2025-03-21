@@ -12,16 +12,17 @@ import {
   Property,
   Collection,
   OneToMany,
-} from '@mikro-orm/core';
-import { BaseEntity } from 'common/base.enitity';
+} from '@mikro-orm/mongodb';
+
+import { BaseEntity } from '../common/base.enitity';
 import {
   CurrencyEnum,
   Lang,
   OS,
   PlanCountryEnum,
   PlatformEnum,
-} from 'common/enums';
-import { PlanV2Repository } from 'repositories/plan.repository';
+} from '../common/enums';
+import { PlanV2Repository } from '../repositories/plan.repository';
 import { MandateV2 } from './mandate.entity';
 
 export enum PlanStatusEnum {
@@ -89,8 +90,6 @@ export class PlanValidity {
 
 @Entity({ repository: () => PlanV2Repository })
 export class PlanV2 extends BaseEntity {
-  @PrimaryKey({ type: new BigIntType('bigint') })
-  id!: bigint;
 
   [EntityRepositoryType]!: PlanV2Repository;
 

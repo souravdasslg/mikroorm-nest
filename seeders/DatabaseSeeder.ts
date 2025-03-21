@@ -14,7 +14,6 @@ export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     // will get persisted automatically
     const plan = em.create(PlanV2, {
-      id: BigInt(1234567890),
       country: PlanCountryEnum.IN,
       currency: CurrencyEnum.INR,
       eligibility: {
